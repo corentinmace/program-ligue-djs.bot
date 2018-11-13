@@ -1,0 +1,15 @@
+{
+  "name": "bot-discord",
+  "version": "1.0.0",
+  "description": "bot for my discor",
+  "main": "main.js",
+  "scripts": {
+    "test": ".test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "express": "^4.16.4"
+  }
+}
