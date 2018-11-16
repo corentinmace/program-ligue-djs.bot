@@ -1,6 +1,10 @@
 {
-  "token": "NTEwNTkwMzE4NTY4MTQ0ODk2.DsekRg.Qsu43-5PQ8dBTI6hIUDKsodje84",
-  "wagID": "510121365140013056",
-  "cRoleID": "511580524200984577",
-		"prefix": "."
+  "botToken": "tokendubot",
+  "servToken": "tokenduserveur",
+  "yourID": "votretoken",
+	"prefix": ".",
+	"adminprefix": "!?",
+	"muted": "id du role : \@lerole pour l'avoir ",
+	"baseRole": "pareil"
+
 }

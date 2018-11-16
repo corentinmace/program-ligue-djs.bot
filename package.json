@@ -4,9 +4,9 @@
   "description": "bot for my discor",
   "main": "main.js",
   "scripts": {
-    "test": ".test"
+    "test": ".hrlp"
   },
-  "author": "",
+  "author": "Skyy",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^11.4.2",
