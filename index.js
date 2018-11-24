@@ -1,4 +1,4 @@
-#!/usr/bin/env nodejs //ligne pour créer une service sur VPS
+﻿#!/usr/bin/env nodejs
 //Settings!
 config = require('./config.json');
 const setupCMD = "!messagerolebotprogramliguefr"
@@ -11,9 +11,10 @@ yourID = config.yourID;
 botToken = config.botToken;
 servToken = config.servToken;
 muted = config.muted;
-
-
-
+channelmod= config.channelmod;
+var spammeur = [];
+var cooldown = 900;
+var tpsPrison = 5000;
 
 //Chargement du bot
 const Discord = require('discord.js');
@@ -22,17 +23,14 @@ bot.login(botToken);
 
 bot.on('ready', () => {
  	bot.user.setStatus("online"); //dnd , online , ldle
-	bot.user.setPresence({ game: { name: `${prefix}aide - ${bot.guilds.get(servToken).memberCount} programmeurs !`, type: 0 } });
+	bot.user.setPresence({ game: { name: `${prefix}help - ${bot.guilds.get(servToken).memberCount} programmeurs !`, type: 0 } });
   	console.log(bot.guilds.get("510121365140013056"));
 		setInterval(function(){
-  bot.guilds.get("510121365140013056").channels.get("510361312329465877").send("Voici les derniÃ¨res news : http://www.phoenixjp.net/news/fr/news.php?nbnews=100&");
+  bot.guilds.get("510121365140013056").channels.get("510361312329465877").send("Voici les dernieres news : http://www.phoenixjp.net/news/fr/news.php?nbnews=100&");
 		},10800000 ); // Affiche les news toutes les 3 heures
   console.log("Le bot est pret !");
 
 });
-
-
-
 
 //Message de bienvenue
  	bot.on('guildMemberAdd', member => {
@@ -41,8 +39,8 @@ bot.on('ready', () => {
   // Do nothing if the channel wasn't found on this server
   if (!channel) return;
   // Send the message, mentioning the member
-  channel.send(`Yo ${member}, bienvenue sur Program'Ligue FR , n'hÃ©site pas a inviter tes amis programmeur !
-	Lis en prioritÃ© les <#510197684322435083> avant de faire quoi que ce soit !
+  channel.send(`Yo ${member}, bienvenue sur Program'Ligue FR , n'hésite pas a inviter tes amis programmeur !
+	Lis en prioritée les <#510197684322435083> avant de faire quoi que ce soit !
 	Bon code !`);
 		member.addRole(config.baseRole)
 });
@@ -123,7 +121,7 @@ bot.on('message', message =>  {
   			.setTitle("Liste des commandes :")
   			.setColor(0xFFFFFF)
 				.addField(".help", "Affiche les commandes disponibles")
-  			.addField(".news", "Affiche les actualitÃ©es du monde de l'informatique")
+  			.addField(".news", "Affiche les actualitées du monde de l'informatique")
 				.addField(".langage", "Vous envoi les langages disponible sur le serveur");
 				message.channel.send({embed});
 
@@ -164,7 +162,7 @@ bot.on('message', message => {
 	if(message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(adminprefix + "kick")){
 
     	member.kick('Raison').then(() => {
-				message.reply(`${user.tag} a  été exclu !`);
+				message.reply(`${user.tag} Ã  été exclu !`);
 			}).catch(err => {
 
           message.reply('Je n\'ai pas pu exclure ce membre ! ');
@@ -175,7 +173,7 @@ bot.on('message', message => {
 	if(message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(adminprefix + "ban")){
 
     	member.ban('Raison').then(() => {
-				message.reply(`${user.tag} a  été banni !`);
+				message.reply(`${user.tag} Ã  été banni !`);
 			}).catch(err => {
 
           message.reply('Je n\'ai pas pu bannir ce membre ! ');
@@ -192,4 +190,41 @@ bot.on('message', message => {
 			message.reply("Utilisateur unmute");
 		};
 
+  var now = Math.floor(Date.now());
+    if ((message.author.id != bot.user.id) && message.channel.guild) {
+        console.log("c'est bien un user");
+        console.log(spammeur.find(auth => auth.author === message.author.id));
+        if (spammeur.find(auth => auth.author === message.author.id) === undefined) {
+            console.log("n'inclus pas ce mec");
+            spammeur.push({
+                "time": now,
+                "author": message.author.id
+            });
+            setTimeout(function() {spammeur.splice(spammeur.findIndex(auth => auth.author === message.author.id),1);}, cooldown+1);
+            console.log(spammeur);
+            return;
+        }
+    }
+
+    if (spammeur.find(auth => auth.author === message.author.id) != undefined) {
+        console.log("trouvé!");
+        var index = spammeur.findIndex(auth => auth.author === message.author.id);
+        console.log(index);
+        if (spammeur[index].time >= now - cooldown) {
+            console.log("spam!");
+            message.member.addRoles(muted);
+            setTimeout(function() {message.member.removeRoles(muted);}, tpsPrison);
+            spammeur.splice(index, 1);
+            console.log(spammeur);
+		const embed = new Discord.RichEmbed()
+                        .setTitle("Message de modération :")
+                        .setColor(0xff0000)
+			.addField("Un utilisateur à  été mute", `<@&510125539822927873>`)
+                        .addField("Username :", message.author.username)
+			.addField("Dernier message :", message.author.lastMessage)
+                    message.guild.channels.get(channelmod).send({embed});
+
+        }
+    }
 });
+
