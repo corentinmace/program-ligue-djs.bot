@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env nodejs
+#!/usr/bin/env nodejs
 //Settings!
 config = require('./config.json');
 const setupCMD = "!messagerolebotprogramliguefr"
@@ -27,7 +27,7 @@ bot.on('ready', () => {
   	console.log(bot.guilds.get("510121365140013056"));
 		setInterval(function(){
   bot.guilds.get("510121365140013056").channels.get("510361312329465877").send("Voici les dernieres news : http://www.phoenixjp.net/news/fr/news.php?nbnews=100&");
-		},10800000 ); // Affiche les news toutes les 3 heures
+		},21600000 ); // Affiche les news toutes les 6 heures
   console.log("Le bot est pret !");
 
 });
@@ -39,8 +39,8 @@ bot.on('ready', () => {
   // Do nothing if the channel wasn't found on this server
   if (!channel) return;
   // Send the message, mentioning the member
-  channel.send(`Yo ${member}, bienvenue sur Program'Ligue FR , n'hésite pas a inviter tes amis programmeur !
-	Lis en prioritée les <#510197684322435083> avant de faire quoi que ce soit !
+  channel.send(`Yo ${member}, bienvenue sur Program'Ligue FR , n'hesite pas a inviter tes amis programmeur !
+	Lis en prioritee les <#510197684322435083> avant de faire quoi que ce soit !
 	Bon code !`);
 		member.addRole(config.baseRole)
 });
@@ -122,11 +122,26 @@ bot.on('message', message =>  {
   			.setColor(0xFFFFFF)
 				.addField(".help", "Affiche les commandes disponibles")
   			.addField(".news", "Affiche les actualitées du monde de l'informatique")
-				.addField(".langage", "Vous envoi les langages disponible sur le serveur");
+				.addField(".langage", "Vous envoi les langages disponible sur le serveur")
+				.addField(".info", "Affiche les informations du serveur");
 				message.channel.send({embed});
 
 
 		}
+		if(message.content === prefix + "info"){
+
+			let sicon = message.guild.iconURL;
+			let serverembed = new Discord.RichEmbed()
+			.setDescription("Informations du serveur")
+			.setColor("0xFFFFFF")
+			.setThumbnail(sicon)
+			.addField("Nom du serveur", message.guild.name)
+			.addField("Crée le", message.guild.createdAt)
+			.addField("Rejoins le", message.member.joinedAt)
+			.addField("Nombres de membres", message.guild.memberCount);
+
+			return message.channel.send(serverembed);
+			}
 });
 
 
@@ -144,10 +159,10 @@ bot.on('message', function(message) {
         .setTitle("Liste des commandes admin :")
         .setColor(0xFFFFFF)
 			 	.addField("!?help", "Affiche les commandes disponibles")
-        .addField("!?kick [@user]", "Expulse l'utilisateur mentionnÃ©(e)")
-        .addField("!?ban [@user]", "Banni l'utilisateur mentionnÃ©(e)")
-				.addField("!?mute [@user]", "Mute l'utilisateur mentionnÃ©(e)")
-				.addField("!?unmute [@user]", "Unmute l'utilisateur mentionnÃ©(e)");
+        .addField("!?kick [@user]", "Expulse l'utilisateur mentionne(e)")
+        .addField("!?ban [@user]", "Banni l'utilisateur mentionne(e)")
+				.addField("!?mute [@user]", "Mute l'utilisateur mentionne(e)")
+				.addField("!?unmute [@user]", "Unmute l'utilisateur mentionne(e)");
         message.channel.send({embed});
     }
 
@@ -162,7 +177,7 @@ bot.on('message', message => {
 	if(message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(adminprefix + "kick")){
 
     	member.kick('Raison').then(() => {
-				message.reply(`${user.tag} Ã  été exclu !`);
+				message.reply(`${user.tag} à  été exclu !`);
 			}).catch(err => {
 
           message.reply('Je n\'ai pas pu exclure ce membre ! ');
@@ -173,7 +188,7 @@ bot.on('message', message => {
 	if(message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(adminprefix + "ban")){
 
     	member.ban('Raison').then(() => {
-				message.reply(`${user.tag} Ã  été banni !`);
+				message.reply(`${user.tag} à  été banni !`);
 			}).catch(err => {
 
           message.reply('Je n\'ai pas pu bannir ce membre ! ');
@@ -217,7 +232,7 @@ bot.on('message', message => {
             spammeur.splice(index, 1);
             console.log(spammeur);
 		const embed = new Discord.RichEmbed()
-                        .setTitle("Message de modération :")
+                        .setTitle("Message de moderation :")
                         .setColor(0xff0000)
 			.addField("Un utilisateur à  été mute", `<@&510125539822927873>`)
                         .addField("Username :", message.author.username)
@@ -227,4 +242,3 @@ bot.on('message', message => {
         }
     }
 });
-
