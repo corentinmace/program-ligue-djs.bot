@@ -1,15 +1,14 @@
 {
-  "name": "bot-discord",
-  "version": "1.0.0",
-  "description": "bot for my discor",
-  "main": "main.js",
+  "name": "programliguefrbot",
+  "version": "2.0.0",
+  "description": "Bot discord-js pour le serveur Program'Ligue FR",
+  "main": "bot.js",
   "scripts": {
-    "test": ".hrlp"
+    "test": "help"
   },
-  "author": "Skyy",
-  "license": "ISC",
+  "author": "Corentin MACE",
+  "license": "MIT",
   "dependencies": {
-    "discord.js": "^11.4.2",
-    "express": "^4.16.4"
+    "discord.js": "^11.4.2"
   }
 }

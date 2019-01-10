@@ -1,3 +1,2 @@
-   # exclude 
-    !/node_modules
-		!/config.json
+/config.json
+/node_modules
