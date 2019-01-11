@@ -79,6 +79,10 @@ exports.admin = function(bot, Discord, message) {
             console.log(args);
             let skipped = args.slice(2);
             let reason = skipped.join(' ');
+            if (reason === '') {
+              message.channel.send("Vous n'avez pas précisé de raisons");
+              reason = "Non précisée";
+            }
             const embed = new Discord.RichEmbed()
                 .setTitle("Message de moderation :")
                 .setColor(0xf44242)
@@ -106,6 +110,10 @@ exports.admin = function(bot, Discord, message) {
             console.log(args);
             let skipped = args.slice(2);
             let reason = skipped.join(' ');
+            if (reason === '') {
+              message.channel.send("Vous n'avez pas précisé de raisons");
+              reason = "Non précisée";
+            }
             const embed = new Discord.RichEmbed()
                 .setTitle("Message de moderation :")
                 .setColor(0xf44242)
@@ -131,6 +139,10 @@ exports.admin = function(bot, Discord, message) {
         console.log(args);
         let skipped = args.slice(2);
         let reason = skipped.join(' ');
+        if (reason === '') {
+          message.channel.send("Vous n'avez pas précisé de raisons");
+          reason = "Non précisée";
+        }
         const embed = new Discord.RichEmbed()
             .setTitle("Message de moderation :")
             .setColor(0xf44242)
@@ -140,7 +152,8 @@ exports.admin = function(bot, Discord, message) {
         message.guild.channels.get(logs).send({
             embed
         });
-    };
+      }
+
 
     //unmute
     if (message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(prefix + "unmute")) {

@@ -20,7 +20,7 @@ adminrole = config.adminrole
 adminJS = require('./admin.js');
 
 
-const version = "v2.1.0"; // Creation d'une variable de la version du bot
+const version = "v2.1.1"; // Creation d'une variable de la version du bot
 
 
 // ----------------------------- //
