@@ -5,7 +5,7 @@ Bot du Discord Program'Ligue FR
 *Correction d'un bug qui faisait crasher le bot quand on ne mettez aucune raison aux commandes admins qui en avaient besoin*
 
 ## V2.2.0
-*Optimisation du bot :
+*Optimisation du bot :*
 -Export admin.js et roles.js
 -Mise à jour des commandes admins
 
