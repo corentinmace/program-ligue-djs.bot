@@ -20,6 +20,7 @@ adminrole = config.adminrole
 adminJS = require('./admin.js');
 
 
+
 const version = "v2.1.1"; // Creation d'une variable de la version du bot
 
 
@@ -183,6 +184,28 @@ bot.on('message', message => {
     adminJS.admin(bot, Discord, message);
     adminJS.antispam(bot, Discord, message);
 
+    if (message.content === prefix + "modo") {
+
+      if (message.channel.id === "533244885151514635") {
+        console.log("C'est bon");
+          message.delete();
+        message.reply("Une demande à été envoyée au Administateurs du serveur. Il te contacteront en mp bientôt");
+        setTimeout(function() {
+            message.channel.bulkDelete(1);
+        }, 15000)
+    }
+
+      else {
+      console.log("Pas le bon channel")
+      message.delete();
+      message.reply("Vous n'etes pas dans le bon channel pour faire cette commande");
+      last = //(Dernier message du bot);
+      console.log('last');
+      setTimeout(function() {
+          last.delete();
+      }, 5000);
+    }
+}
 
 });
 
@@ -215,6 +238,7 @@ bot.on("messageReactionRemove", (reaction, user) => {
         }
 
     }
+
 
 });
 

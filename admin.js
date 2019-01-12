@@ -48,8 +48,7 @@ exports.admin = function(bot, Discord, message) {
         }
 
         if (message.member.hasPermission("MANAGE_MESSAGES")) {
-            message.channel.bulkDelete(args[1]);
-
+            message.channel.bulkDelete(args[1]);//.then(console.log(`Cleared ${args[1]} messages`));
             const embed = new Discord.RichEmbed()
                 .setTitle("Message de moderation :")
                 .setColor(0x64db2e)
@@ -192,10 +191,10 @@ exports.antispam = function(bot, Discord, message) {
     //anti-spam
     var now = Math.floor(Date.now());
     if ((message.author.id != bot.user.id) && message.channel.guild) {
-        console.log("c'est bien un user");
-        console.log(spammeur.find(auth => auth.author === message.author.id));
+    //    console.log("c'est bien un user");
+    //    console.log(spammeur.find(auth => auth.author === message.author.id));
         if (spammeur.find(auth => auth.author === message.author.id) === undefined) {
-            console.log("n'inclus pas ce mec");
+          //  console.log("n'inclus pas ce mec");
             spammeur.push({
                 "time": now,
                 "author": message.author.id
@@ -203,7 +202,7 @@ exports.antispam = function(bot, Discord, message) {
             setTimeout(function() {
                 spammeur.splice(spammeur.findIndex(auth => auth.author === message.author.id), 1);
             }, cooldown + 1);
-            console.log(spammeur);
+          //  console.log(spammeur);
             return;
         }
     }
@@ -211,7 +210,7 @@ exports.antispam = function(bot, Discord, message) {
     if (!message.member.hasPermission('ADMINISTRATOR')) {
 
         if ((spammeur.find(auth => auth.author === message.author.id) != undefined)) {
-            console.log("trouvé!");
+          //  console.log("trouvé!");
             var index = spammeur.findIndex(auth => auth.author === message.author.id);
             console.log(index);
             if (spammeur[index].time >= now - cooldown) {
