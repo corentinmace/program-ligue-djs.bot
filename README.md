@@ -1,6 +1,15 @@
 # **Program'Ligue BOT**
 Bot du Discord Program'Ligue FR
 
+## V2.1.5
+
+- Update du bot logs
+- Ajout d'un api.js qui contiendras toutes les apis
+- Ajout d'une commande github
+- Ajout du systeme de recrutement helper et moderation
+
+
+
 ## V2.2.1
 *Correction d'un bug qui faisait crasher le bot quand on ne mettez aucune raison aux commandes admins qui en avaient besoin*
 

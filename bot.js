@@ -16,12 +16,14 @@ roch = config.rolechan;
 rolejs = require('./roles.js');
 testRole = rolejs.testRole;
 
-adminrole = config.adminrole
+adminrole = config.adminrole;
 adminJS = require('./admin.js');
 
+api = require('./api.js');
 
+const roles = ["HTML/CSS", "SQL", "Java", "C#", "C", "C++", "Javascript", "Arduino", "PHP", "Processing", "Unity", "ReactJS", "Python", "Kornshell", "MacOS", "Linux", "NodeJS", "Bash", "OCaml", "Brainfuck", "Swift", "Angular", "ASM"];
 
-const version = "v2.1.1"; // Creation d'une variable de la version du bot
+const version = "v2.1.5"; // Creation d'une variable de la version du bot
 
 
 // ----------------------------- //
@@ -49,7 +51,8 @@ bot.on('ready', () => {
     let logembed = new Discord.RichEmbed()
         .setTitle("ACTIVITY LOG")
         .setColor(0xf36060)
-        .addField("**BOT :**", "*REBOOTED*");
+        .addField("**BOT :**", "*REBOOTED*")
+        .addField("AT :", new Date());
 
 
     setTimeout(function() {
@@ -96,6 +99,12 @@ bot.on('guildMemberAdd', member => {
 
 bot.on('message', message => {
 
+    // APIs
+
+    api.github(bot, Discord, message);
+
+    // ---------------------------------------- //
+
     let online = message.guild.members.filter(member => member.presence.status === "online").size; // Filtrage des personnes en lignes
     const user = message.mentions.users.first();
     const member = message.guild.member(user);
@@ -116,6 +125,7 @@ bot.on('message', message => {
             .addField(`${prefix}help`, "Affiche les commandes disponibles")
             .addField(`${prefix}admin`, "Affiche les commandes administateur")
             .addField(`${prefix}news`, "Affiche les actualitées du monde de l'informatique")
+            .addField(`${prefix}github [pseudo]`, "Envoi le github du pseudo entré")
             .addField(`${prefix}langage`, "Vous envoi les langages disponible sur le serveur")
             .addField(`${prefix}server-info`, "Affiche les informations du serveur")
             .addField(`${prefix}bot-info`, "Affiche les informations du bot")
@@ -179,34 +189,27 @@ bot.on('message', message => {
         return message.channel.send(serverembed); // Envoi de l'embed
     }
 
+
+
     // ------------------------------------------ //
 
     adminJS.admin(bot, Discord, message);
     adminJS.antispam(bot, Discord, message);
 
-    if (message.content === prefix + "modo") {
-
-      if (message.channel.id === "533244885151514635") {
-        console.log("C'est bon");
-          message.delete();
-        message.reply("Une demande à été envoyée au Administateurs du serveur. Il te contacteront en mp bientôt");
-        setTimeout(function() {
-            message.channel.bulkDelete(1);
-        }, 15000)
+    if (message.channel.id === "533244885151514635") {
+        console.log("C'est le bon channel");
+        if ((message.content === "modo") || (message.content === "helper")) {
+            console.log("C'est une commande");
+            message.delete();
+            message.reply("Une demande à été envoyée au Administateurs du serveur. Il te contacteront en mp bientôt");
+            bot.guilds.get(servToken).channels.get("532976996054073344").send(`${message.author.username} veut devenir ${message.author.lastMessage}`);
+        } else if ((message.content !== "modo") || (message.content !== "helper")) {
+            console.log("C'est pas une commande ça");
+            console.log("not a command");
+            bot.guilds.get(servToken).channels.get("533244885151514635");
+            message.delete(10000);
+        }
     }
-
-      else {
-      console.log("Pas le bon channel")
-      message.delete();
-      message.reply("Vous n'etes pas dans le bon channel pour faire cette commande");
-      last = //(Dernier message du bot);
-      console.log('last');
-      setTimeout(function() {
-          last.delete();
-      }, 5000);
-    }
-}
-
 });
 
 
@@ -230,7 +233,6 @@ bot.on("messageReactionRemove", (reaction, user) => {
 
     if (reaction.message.channel.id == roch) {
         if (user.id !== bot.user.id) {
-            console.log("coucou ta mere");
             if (testRole(reaction.emoji.id) !== "none") {
                 console.log(testRole(reaction.emoji.id));
                 bot.guilds.get(servToken).members.get(user.id).removeRole(bot.guilds.get(servToken).roles.get(testRole(reaction.emoji.id))); // ajoute le role

@@ -1,0 +1,25 @@
+config = require('./config.json');
+const request = require("request");
+
+exports.github = function(bot, Discord, message) {
+    if (message.content.includes(prefix + "github")) {
+        const username = message.content.split(" ");
+        console.log(username[1]);
+        const options = {
+            url: `https://api.github.com/search/users?q=${username[1]}&type=user`,
+            headers: {
+                'User-Agent': 'request',
+            }
+        }
+
+
+
+        request.get(options, (err, resp, data) => {
+            console.log(err);
+            const json = JSON.parse(data);
+            console.log(json)
+            message.channel.send(`${json.items[0].html_url}?tab=repositories`);
+        })
+
+    };
+}

@@ -9,6 +9,7 @@
   "author": "Corentin MACE",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "^11.4.2"
+    "discord.js": "^11.4.2",
+    "request": "^2.88.0"
   }
 }
