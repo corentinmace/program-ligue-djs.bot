@@ -23,7 +23,7 @@ api = require('./api.js');
 
 const roles = ["HTML/CSS", "SQL", "Java", "C#", "C", "C++", "Javascript", "Arduino", "PHP", "Processing", "Unity", "ReactJS", "Python", "Kornshell", "MacOS", "Linux", "NodeJS", "Bash", "OCaml", "Brainfuck", "Swift", "Angular", "ASM"];
 
-const version = "v2.1.5"; // Creation d'une variable de la version du bot
+const version = "v2.1.6"; // Creation d'une variable de la version du bot
 
 
 // ----------------------------- //
@@ -102,6 +102,7 @@ bot.on('message', message => {
     // APIs
 
     api.github(bot, Discord, message);
+    api.repo(bot, Discord, message);
 
     // ---------------------------------------- //
 
@@ -126,6 +127,7 @@ bot.on('message', message => {
             .addField(`${prefix}admin`, "Affiche les commandes administateur")
             .addField(`${prefix}news`, "Affiche les actualitées du monde de l'informatique")
             .addField(`${prefix}github [pseudo]`, "Envoi le github du pseudo entré")
+            .addField(`${prefix}repo [pseudo] [repo]`, "Envoi le repositories de la personne demandé")
             .addField(`${prefix}langage`, "Vous envoi les langages disponible sur le serveur")
             .addField(`${prefix}server-info`, "Affiche les informations du serveur")
             .addField(`${prefix}bot-info`, "Affiche les informations du bot")

@@ -2,7 +2,7 @@ config = require('./config.json');
 const request = require("request");
 
 exports.github = function(bot, Discord, message) {
-    if (message.content.includes(prefix + "github")) {
+    if (message.content.startsWith(prefix + "github")) {
         const username = message.content.split(" ");
         console.log(username[1]);
         const options = {
@@ -22,4 +22,13 @@ exports.github = function(bot, Discord, message) {
         })
 
     };
+
+}
+exports.repo = function(bot, Discord, message) {
+  if (message.content.startsWith(prefix + "repo")){
+    const repo = message.content.split(" ");
+      console.log(repo[1]);
+      console.log(repo[2]);
+    message.channel.send(`https://github.com/${repo[1]}/${repo[2]}`);
+  }
 }
