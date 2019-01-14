@@ -25,10 +25,43 @@ exports.github = function(bot, Discord, message) {
 
 }
 exports.repo = function(bot, Discord, message) {
-  if (message.content.startsWith(prefix + "repo")){
-    const repo = message.content.split(" ");
-      console.log(repo[1]);
-      console.log(repo[2]);
-    message.channel.send(`https://github.com/${repo[1]}/${repo[2]}`);
-  }
+    if (message.content.startsWith(prefix + "repo")) {
+        const repo = message.content.split(" ");
+        console.log(repo[1]);
+        console.log(repo[2]);
+       const received = {
+            url: `https://api.github.com/repos/${repo[1]}/${repo[2]}`,
+            headers: {
+                'User-Agent': 'request',
+            }
+        }
+
+
+        request.get(received, (err, resp, data) => {
+            console.log(err);
+            const json = JSON.parse(data);
+            console.log(json);
+                message.channel.send(`${json.html_url}`);
+		message.channel.send(`Titre : ${json.name}`);
+		message.channel.send(`Description : ${json.description}`);
+		message.channel.send(`Stars : ${json.stargazers_count}, Langage : ${json.language}`);	
+         /* const embed = new Discord.RichEmbed()
+              .setTitle(`${json.name}`)
+              .setDescription(`${json.description}`)
+              .setColor(0x000000)
+              .addField("Stars", `${json.stargazers_count}`)
+              .addField("Langage",  `${json.language}`);
+          message.guild.channels.get(logs).send({
+              embed
+          });*/
+
+        })
+
+    };
 }
+/*if (message.content.startsWith(prefix + "repo")){
+  const repo = message.content.split(" ");
+    console.log(repo[1]);
+    console.log(repo[2]);
+  message.channel.send(`https://github.com/${repo[1]}/${repo[2]}`);
+}*/

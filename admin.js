@@ -44,7 +44,7 @@ exports.admin = function(bot, Discord, message) {
 
         if (args[1] == null) {
             args[1] + 1;
-            message.channel.send("Vous devez spécifier le nombre de message à supprimer");
+            message.channel.send("Vous devez specifier le nombre de message a supprimer");
         }
 
         if (message.member.hasPermission("MANAGE_MESSAGES")) {
@@ -52,7 +52,7 @@ exports.admin = function(bot, Discord, message) {
             const embed = new Discord.RichEmbed()
                 .setTitle("Message de moderation :")
                 .setColor(0x64db2e)
-                .addField("Des messages ont été supprimés", `Par ${message.author.username}`)
+                .addField("Des messages ont ete supprimes", `Par ${message.author.username}`)
                 .addField("Nombre de message ", args[1] - 1)
             message.guild.channels.get(logs).send({
                 embed
@@ -79,13 +79,13 @@ exports.admin = function(bot, Discord, message) {
             let skipped = args.slice(2);
             let reason = skipped.join(' ');
             if (reason === '') {
-                message.channel.send("Vous n'avez pas précisé de raisons");
-                reason = "Non précisée";
+                message.channel.send("Vous n'avez pas precise de raisons");
+                reason = "Non precise";
             }
             const embed = new Discord.RichEmbed()
                 .setTitle("Message de moderation :")
                 .setColor(0xf44242)
-                .addField("Un utilisateur à  été exclu", `Par ${message.author.username}`)
+                .addField("Un utilisateur a�ete exclu", `Par ${message.author.username}`)
                 .addField("Username :", member)
                 .addField("Raison :", reason);
             message.guild.channels.get(logs).send({
@@ -110,13 +110,13 @@ exports.admin = function(bot, Discord, message) {
             let skipped = args.slice(2);
             let reason = skipped.join(' ');
             if (reason === '') {
-                message.channel.send("Vous n'avez pas précisé de raisons");
-                reason = "Non précisée";
+                message.channel.send("Vous n'avez pas precise de raisons");
+                reason = "Non precise";
             }
             const embed = new Discord.RichEmbed()
                 .setTitle("Message de moderation :")
                 .setColor(0xf44242)
-                .addField("Un utilisateur à  été banni", `Par ${message.author.username}`)
+                .addField("Un utilisateur a ete banni", `Par ${message.author.username}`)
                 .addField("Username :", member)
                 .addField("Raison :", reason)
             message.guild.channels.get(logs).send({
@@ -139,13 +139,13 @@ exports.admin = function(bot, Discord, message) {
         let skipped = args.slice(2);
         let reason = skipped.join(' ');
         if (reason === '') {
-            message.channel.send("Vous n'avez pas précisé de raisons");
+            message.channel.send("Vous n'avez pas precise de raisons");
             reason = "Non précisée";
         }
         const embed = new Discord.RichEmbed()
             .setTitle("Message de moderation :")
             .setColor(0xf44242)
-            .addField("Un utilisateur à  été mute", `Par ${message.author.username}`)
+            .addField("Un utilisateur a ete mute", `Par ${message.author.username}`)
             .addField("Username :", member)
             .addField("Raison :", reason)
         message.guild.channels.get(logs).send({
@@ -161,7 +161,7 @@ exports.admin = function(bot, Discord, message) {
         const embed = new Discord.RichEmbed()
             .setTitle("Message de moderation :")
             .setColor(0x64db2e)
-            .addField("Un utilisateur à  été unmute", `Par ${message.author.username}`)
+            .addField("Un utilisateur a ete unmute", `Par ${message.author.username}`)
             .addField("Username :", member)
 
         message.guild.channels.get(logs).send({
@@ -169,24 +169,8 @@ exports.admin = function(bot, Discord, message) {
         });
     };
 
-    // Si le message contient pd
-    if (message.content.includes("pd")) {
-        console.log("Aya il a dit pd")
-        message.channel.send('Pas d\'insulte !');
-        message.member.addRole(muted);
-
-        const embed = new Discord.RichEmbed()
-            .setTitle("Message de moderation :")
-            .setColor(0xf44242)
-            .addField("Un utilisateur à  été mute", `Pour : Insulte`)
-            .addField("Username :", message.author.username)
-            .addField("Dernier message :", message.author.lastMessage)
-        message.guild.channels.get(logs).send({
-            embed
-        });
-    }
 }
-
+ 
 exports.antispam = function(bot, Discord, message) {
     //anti-spam
     var now = Math.floor(Date.now());
@@ -225,7 +209,7 @@ exports.antispam = function(bot, Discord, message) {
                 const embed = new Discord.RichEmbed()
                     .setTitle("Message de moderation :")
                     .setColor(0xf44242)
-                    .addField("Un utilisateur à  été mute", `Par : Anti-Spam`)
+                    .addField("Un utilisateur a ete mute", `Par : Anti-Spam`)
                     .addField("Username :", message.author.username)
                     .addField("Dernier message :", message.author.lastMessage)
                 message.guild.channels.get(logs).send({
