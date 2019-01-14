@@ -1,226 +1,200 @@
-config = require('./config.json');
+const config = require('./config.json')
+const prefix = config.prefix
 
-muted = config.muted;
+const muted = config.muted
 
-var spammeur = [];
-var cooldown = 500;
-var tpsPrison = 5000;
+var spammeur = []
+var cooldown = 500
+var tpsPrison = 5000
 
 // Commandes admins
 
-exports.admin = function(bot, Discord, message) {
+exports.admin = function (bot, Discord, message) {
+  const user = message.mentions.users.first()
+  const member = message.guild.member(user)
 
-    const user = message.mentions.users.first();
-    const member = message.guild.member(user);
+  if (message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(prefix + 'admin')) {
+    message.delete()
+    const embed = new Discord.RichEmbed()
+      .setTitle('Liste des commandes admin :')
+      .setColor(0xf36060)
+      .addField(`${prefix}admin`, 'Affiche les commandes disponibles')
+      .addField(`${prefix}clear [nombre]`, 'Efface le nombre de messages souhaités')
+      .addField(`${prefix}kick [@user]`, 'Expulse l\'utilisateur mentionne(e)')
+      .addField(`${prefix}ban [@user]`, 'Banni l\'utilisateur mentionne(e)')
+      .addField(`${prefix}mute [@user]`, 'Mute l\'utilisateur mentionne(e)')
+      .addField(`${prefix}unmute [@user]`, 'Unmute l\'utilisateur mentionne(e)')
+      .setFooter(`Demandé par ${message.author.username}`, message.author.avatarURL)
+    message.channel.send({
+      embed
+    })
+  } else if (!message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(prefix + 'admin')) {
+    message.channel.send(`Vous n'avez pas les droits d'utiliser cette commande ${message.author} !`)
+  }
 
-    if (message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(prefix + "admin")) {
-        message.delete();
-        const embed = new Discord.RichEmbed()
-            .setTitle("Liste des commandes admin :")
-            .setColor(0xf36060)
-            .addField(`${prefix}admin`, "Affiche les commandes disponibles")
-            .addField(`${prefix}clear [nombre]`, "Efface le nombre de messages souhaités")
-            .addField(`${prefix}kick [@user]`, "Expulse l'utilisateur mentionne(e)")
-            .addField(`${prefix}ban [@user]`, "Banni l'utilisateur mentionne(e)")
-            .addField(`${prefix}mute [@user]`, "Mute l'utilisateur mentionne(e)")
-            .addField(`${prefix}unmute [@user]`, "Unmute l'utilisateur mentionne(e)")
-            .setFooter(`Demandé par ${message.author.username}`, message.author.avatarURL);
-        message.channel.send({
-            embed
-        });
-    } else if (!message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(prefix + "admin")) {
-        message.channel.send(`Vous n'avez pas les droits d'utiliser cette commande ${message.author} !`);
+  // Clear
+
+  if (message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(prefix + 'clear')) {
+    let args = message.content.split(' ') // Creation des arguments
+    if (args[1] === 0) {
+      message.channel.send('Vous ne pouvez pas supprimer 0 messages')
     }
 
-    // Clear
-
-    if (message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(prefix + "clear")) {
-
-        let args = message.content.split(' '); // Creation des arguments
-
-        if (args[1] == 0) {
-            message.channel.send("Vous ne pouvez pas supprimer 0 messages");
-        }
-
-        if (args[1] == null) {
-            args[1] + 1;
-            message.channel.send("Vous devez specifier le nombre de message a supprimer");
-        }
-
-        if (message.member.hasPermission("MANAGE_MESSAGES")) {
-            message.channel.bulkDelete(args[1]); //.then(console.log(`Cleared ${args[1]} messages`));
-            const embed = new Discord.RichEmbed()
-                .setTitle("Message de moderation :")
-                .setColor(0x64db2e)
-                .addField("Des messages ont ete supprimes", `Par ${message.author.username}`)
-                .addField("Nombre de message ", args[1] - 1)
-            message.guild.channels.get(logs).send({
-                embed
-            });
-        }
-
-
-    } else if (!message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(prefix + "clear")) {
-        message.channel.send(`Vous n'avez pas les droits d'utiliser cette commande ${message.author} !`);
-
+    if (args[1] == null) {
+      args[1] + 1
+      message.channel.send('Vous devez specifier le nombre de message a supprimer')
     }
 
-
-
-
-    //kick
-
-    if (message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(prefix + "kick")) {
-
-        member.kick('Raison').then(() => {
-            message.channel.send(`${user.tag} à  été exclu !`);
-            let args = message.content.split(' ');
-            console.log(args);
-            let skipped = args.slice(2);
-            let reason = skipped.join(' ');
-            if (reason === '') {
-                message.channel.send("Vous n'avez pas precise de raisons");
-                reason = "Non precise";
-            }
-            const embed = new Discord.RichEmbed()
-                .setTitle("Message de moderation :")
-                .setColor(0xf44242)
-                .addField("Un utilisateur a�ete exclu", `Par ${message.author.username}`)
-                .addField("Username :", member)
-                .addField("Raison :", reason);
-            message.guild.channels.get(logs).send({
-                embed
-            });
-        }).catch(err => {
-
-            message.reply('Je n\'ai pas pu exclure ce membre ! ');
-
-            console.error(err);
-        });
+    if (message.member.hasPermission('MANAGE_MESSAGES')) {
+      message.channel.bulkDelete(args[1])
+      const embed = new Discord.RichEmbed()
+        .setTitle('Message de moderation :')
+        .setColor(0x64db2e)
+        .addField('Des messages ont ete supprimes', `Par ${message.author.username}`)
+        .addField('Nombre de message ', args[1] - 1)
+      message.guild.channels.get(logs).send({
+        embed
+      })
     }
+  } else if (!message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(prefix + 'clear')) {
+    message.channel.send(`Vous n'avez pas les droits d'utiliser cette commande ${message.author} !`)
+  }
 
-    //ban
+  // kick
 
-    if (message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(prefix + "ban")) {
+  if (message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(prefix + 'kick')) {
+    member.kick('Raison').then(() => {
+      message.channel.send(`${user.tag} à  été exclu !`)
+      let args = message.content.split(' ')
+      console.log(args)
+      let skipped = args.slice(2)
+      let reason = skipped.join(' ')
+      if (reason === '') {
+        message.channel.send('Vous n\'avez pas precise de raisons')
+        reason = 'Non precise'
+      }
+      const embed = new Discord.RichEmbed()
+        .setTitle('Message de moderation :')
+        .setColor(0xf44242)
+        .addField('Un utilisateur a ete exclu', `Par ${message.author.username}`)
+        .addField('Username :', member)
+        .addField('Raison :', reason)
+      message.guild.channels.get(logs).send({
+        embed
+      })
+    }).catch(err => {
+      message.reply('Je n\'ai pas pu exclure ce membre ! ')
+      console.error(err)
+    })
+  }
 
-        member.ban('Raison').then(() => {
-            message.channel.send(`${user.tag} à  été banni !`);
-            let args = message.content.split(' ');
-            console.log(args);
-            let skipped = args.slice(2);
-            let reason = skipped.join(' ');
-            if (reason === '') {
-                message.channel.send("Vous n'avez pas precise de raisons");
-                reason = "Non precise";
-            }
-            const embed = new Discord.RichEmbed()
-                .setTitle("Message de moderation :")
-                .setColor(0xf44242)
-                .addField("Un utilisateur a ete banni", `Par ${message.author.username}`)
-                .addField("Username :", member)
-                .addField("Raison :", reason)
-            message.guild.channels.get(logs).send({
-                embed
-            });
-        }).catch(err => {
+  // ban
 
-            message.reply('Je n\'ai pas pu bannir ce membre ! ');
+  if (message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(prefix + 'ban')) {
+    member.ban('Raison').then(() => {
+      message.channel.send(`${user.tag} à  été banni !`)
+      let args = message.content.split(' ')
+      console.log(args)
+      let skipped = args.slice(2)
+      let reason = skipped.join(' ')
+      if (reason === '') {
+        message.channel.send('Vous n\'avez pas precise de raisons')
+        reason = 'Non precise'
+      }
+      const embed = new Discord.RichEmbed()
+        .setTitle('Message de moderation :')
+        .setColor(0xf44242)
+        .addField('Un utilisateur a ete banni', `Par ${message.author.username}`)
+        .addField('Username :', member)
+        .addField('Raison :', reason)
+      message.guild.channels.get(logs).send({
+        embed
+      })
+    }).catch(err => {
+      message.reply('Je n\'ai pas pu bannir ce membre ! ')
+      console.error(err)
+    })
+  }
 
-            console.error(err);
-        });
+  // mute
+  if (message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(prefix + 'mute')) {
+    member.addRole(muted)
+    message.channel.send(`Taisez-vous ${member} !`)
+    let args = message.content.split(' ')
+    console.log(args)
+    let skipped = args.slice(2)
+    let reason = skipped.join(' ')
+    if (reason === '') {
+      message.channel.send('Vous n\'avez pas precise de raisons')
+      reason = 'Non précisée'
     }
+    const embed = new Discord.RichEmbed()
+      .setTitle('Message de moderation :')
+      .setColor(0xf44242)
+      .addField('Un utilisateur a ete mute', `Par ${message.author.username}`)
+      .addField('Username :', member)
+      .addField('Raison :', reason)
+    message.guild.channels.get(logs).send({
+      embed
+    })
+  }
 
-    //mute
-    if (message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(prefix + "mute")) {
-        member.addRole(muted);
-        message.channel.send(`Taisez-vous ${member} !`);
-        let args = message.content.split(' ');
-        console.log(args);
-        let skipped = args.slice(2);
-        let reason = skipped.join(' ');
-        if (reason === '') {
-            message.channel.send("Vous n'avez pas precise de raisons");
-            reason = "Non précisée";
-        }
-        const embed = new Discord.RichEmbed()
-            .setTitle("Message de moderation :")
-            .setColor(0xf44242)
-            .addField("Un utilisateur a ete mute", `Par ${message.author.username}`)
-            .addField("Username :", member)
-            .addField("Raison :", reason)
-        message.guild.channels.get(logs).send({
-            embed
-        });
-    }
-
-
-    //unmute
-    if (message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(prefix + "unmute")) {
-        member.removeRole(muted);
-        message.channel.send(`Vous pouvez de nouveau parler ${member}`);
-        const embed = new Discord.RichEmbed()
-            .setTitle("Message de moderation :")
-            .setColor(0x64db2e)
-            .addField("Un utilisateur a ete unmute", `Par ${message.author.username}`)
-            .addField("Username :", member)
-
-        message.guild.channels.get(logs).send({
-            embed
-        });
-    };
-
+  // unmute
+  if (message.member.hasPermission('BAN_MEMBERS') && message.content.startsWith(prefix + 'unmute')) {
+    member.removeRole(muted)
+    message.channel.send(`Vous pouvez de nouveau parler ${member}`)
+    const embed = new Discord.RichEmbed()
+      .setTitle('Message de moderation :')
+      .setColor(0x64db2e)
+      .addField('Un utilisateur a ete unmute', `Par ${message.author.username}`)
+      .addField('Username :', member)
+    message.guild.channels.get(logs).send({
+      embed
+    })
+  };
 }
- 
-exports.antispam = function(bot, Discord, message) {
-    //anti-spam
-    var now = Math.floor(Date.now());
-    if ((message.author.id != bot.user.id) && message.channel.guild) {
-        //    console.log("c'est bien un user");
-        //    console.log(spammeur.find(auth => auth.author === message.author.id));
-        if (spammeur.find(auth => auth.author === message.author.id) === undefined) {
-            //  console.log("n'inclus pas ce mec");
-            spammeur.push({
-                "time": now,
-                "author": message.author.id
-            });
-            setTimeout(function() {
-                spammeur.splice(spammeur.findIndex(auth => auth.author === message.author.id), 1);
-            }, cooldown + 1);
-            //  console.log(spammeur);
-            return;
-        }
+
+exports.antispam = function (bot, Discord, message) {
+  // anti-spam
+  var now = Math.floor(Date.now())
+  if ((message.author.id !== bot.user.id) && message.channel.guild) {
+    if (spammeur.find(auth => auth.author === message.author.id) === undefined) {
+      spammeur.push({
+        'time': now,
+        'author': message.author.id
+      })
+      setTimeout(function () {
+        spammeur.splice(spammeur.findIndex(auth => auth.author === message.author.id), 1)
+      }, cooldown + 1)
+      return
     }
+  }
 
-    if (!message.member.hasPermission('ADMINISTRATOR')) {
-
-        if ((spammeur.find(auth => auth.author === message.author.id) != undefined)) {
-            //  console.log("trouvé!");
-            var index = spammeur.findIndex(auth => auth.author === message.author.id);
-            console.log(index);
-            if (spammeur[index].time >= now - cooldown) {
-                console.log("spam!");
-                message.member.addRoles(muted);
-
-                message.reply("Pas de spam !")
-                setTimeout(function() {
-                    message.member.removeRoles(muted);
-                }, tpsPrison);
-                spammeur.splice(index, 1);
-                const embed = new Discord.RichEmbed()
-                    .setTitle("Message de moderation :")
-                    .setColor(0xf44242)
-                    .addField("Un utilisateur a ete mute", `Par : Anti-Spam`)
-                    .addField("Username :", message.author.username)
-                    .addField("Dernier message :", message.author.lastMessage)
-                message.guild.channels.get(logs).send({
-                    embed
-                });
-                console.log(spammeur);
-
-
-            }
-        }
+  if (!message.member.hasPermission('ADMINISTRATOR')) {
+    if ((spammeur.find(auth => auth.author === message.author.id) !== undefined)) {
+      var index = spammeur.findIndex(auth => auth.author === message.author.id)
+      console.log(index)
+      if (spammeur[index].time >= now - cooldown) {
+        console.log('spam!')
+        message.member.addRoles(muted)
+        message.reply('Pas de spam !')
+        setTimeout(function () {
+          message.member.removeRoles(muted)
+        }, tpsPrison)
+        spammeur.splice(index, 1)
+        const embed = new Discord.RichEmbed()
+          .setTitle('Message de moderation :')
+          .setColor(0xf44242)
+          .addField('Un utilisateur a ete mute', `Par : Anti-Spam`)
+          .addField('Username :', message.author.username)
+          .addField('Dernier message :', message.author.lastMessage)
+        message.guild.channels.get(logs).send({
+          embed
+        })
+        console.log(spammeur)
+      }
     }
+  }
 }
 
 // --------------------------------------- //
