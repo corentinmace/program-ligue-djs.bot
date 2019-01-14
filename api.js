@@ -44,16 +44,16 @@ exports.repo = function(bot, Discord, message) {
                 message.channel.send(`${json.html_url}`);
 		message.channel.send(`Titre : ${json.name}`);
 		message.channel.send(`Description : ${json.description}`);
-		message.channel.send(`Stars : ${json.stargazers_count}, Langage : ${json.language}`);	
-         /* const embed = new Discord.RichEmbed()
+		//message.channel.send(`Stars : ${json.stargazers_count}, Langage : ${json.language}`);
+         const embed = new Discord.RichEmbed()
               .setTitle(`${json.name}`)
               .setDescription(`${json.description}`)
               .setColor(0x000000)
               .addField("Stars", `${json.stargazers_count}`)
               .addField("Langage",  `${json.language}`);
-          message.guild.channels.get(logs).send({
+          message.channel.send({
               embed
-          });*/
+          });
 
         })
 
