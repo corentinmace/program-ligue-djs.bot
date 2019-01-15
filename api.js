@@ -46,6 +46,7 @@ exports.repo = function (bot, Discord, message) {
         .setColor(0x000000)
         .addField('Stars', `${json.stargazers_count}`)
         .addField('Langage', `${json.language}`)
+        .addField('Derniere MAJ', `${json.updated_at}`)
       message.channel.send({
         embed
       })
