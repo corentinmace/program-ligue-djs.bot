@@ -1,7 +1,6 @@
 # **Program'Ligue BOT**
 Bot du Discord Program'Ligue FR
 
-# Discord JDR BOT  
 ![Logo.png](https://cdn.discordapp.com/attachments/491946867685326848/551781948541108244/Logo.png)
 
 ## V2.1.5
