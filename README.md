@@ -3,10 +3,16 @@ Bot du Discord Program'Ligue FR
 
 ## V2.1.5
 
-- Update du bot logs
-- Ajout d'un api.js qui contiendras toutes les apis
-- Ajout d'une commande github
-- Ajout du systeme de recrutement helper et moderation
+➕ Update du bot logs
+
+➕ Ajout d'un api.js qui contiendras toutes les apis
+
+➕ Ajout d'une commande github
+
+➕ Ajout du systeme de recrutement helper et moderation
+
+➖ Envoi des news toutes les 12h
+
 
 
 
@@ -15,8 +21,10 @@ Bot du Discord Program'Ligue FR
 
 ## V2.2.0
 *Optimisation du bot :*
--Export admin.js et roles.js
--Mise à jour des commandes admins
+
+➕ Export admin.js et roles.js
+
+➕ Mise à jour des commandes admins
 
 
 ### V2 :
