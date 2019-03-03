@@ -2,7 +2,7 @@
 Bot du Discord Program'Ligue FR
 
 # Discord JDR BOT  
-![kisspng-computer-icons-discord-clip-art-logo-portable-netw-discord-computer-icons-logo-user-internet-bot-di-5b696b47463139.3774402815336353992875.jpg](https://img1.freepng.fr/20180807/ept/kisspng-computer-icons-discord-clip-art-logo-portable-netw-discord-computer-icons-logo-user-internet-bot-di-5b696b47463139.3774402815336353992875.jpg)
+![Logo.png](https://cdn.discordapp.com/attachments/491946867685326848/551781948541108244/Logo.png)
 
 ## V2.1.5
 
